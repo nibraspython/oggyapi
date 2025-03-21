@@ -4,6 +4,6 @@
     { "src": "/img", "dest": "/api/img.js" },
     { "src": "/insta", "dest": "/api/insta.js" },
     { "src": "/ss", "dest": "/api/ss.js" },
-    { "src": "/", "dest": "/index.js" }
+    { "src": "/", "dest": "/api/index.js" }
   ]
 }
