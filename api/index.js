@@ -4,7 +4,7 @@ let currentStatus = statuses[0]; // Default status
 // Update status every 3 seconds
 setInterval(() => {
   currentStatus = statuses[Math.floor(Math.random() * statuses.length)];
-}, 3000);
+}, 2000);
 
 export default function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
