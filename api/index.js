@@ -1,26 +1,19 @@
-const express = require("express");
-const app = express();
+let isAlive = true; // Initial status
 
-const colors = ["🟢", "🔵", "🟤", "🟡", "🟢", "🌸"]; // Color cycle
-let colorIndex = 0;
+export default function handler(req, res) {
+  res.setHeader("Content-Type", "application/json");
 
-app.get("/", (req, res) => {
-    // Cycle through colors every request
-    const statusColor = colors[colorIndex];
-    colorIndex = (colorIndex + 1) % colors.length;
+  // Toggle the status
+  isAlive = !isAlive;
+  const statusText = isAlive ? "🟢 Alive" : "🔴 Dead";
 
-    res.json({
-        status: `${statusColor} Online`,
-        message: "API is working well.",
-        services: {
-            insta_video_download: "/insta - To download Instagram video",
-            web_screenshot: "/ss - To get a screenshot of a website",
-        },
-        coded_by: "@OGGY_WORKSHOP"
-    });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+  res.status(200).json({ 
+    status: statusText, 
+    message: "API is working well.", 
+    services: {
+      insta_video_download: "/insta - To download Instagram video",
+      web_screenshot: "/ss - To get a screenshot of a website"
+    },
+    coded_by: "@OGGY_WORKSHOP"
+  });
+}
