@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "npx vercel dev",
-    "start": "npx vercel start",
-    "deploy": "npx vercel deploy"
+    "dev": "vercel dev",
+    "start": "node index.js",
+    "deploy": "vercel deploy"
   },
   "dependencies": {
     "express": "^4.18.2",
