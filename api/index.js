@@ -1,14 +1,13 @@
-let isAlive = true; // Initial status
+let statuses = ["Running", "Walking", "Live", "Working", "Active", "Online"]; 
 
 export default function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
 
-  // Toggle the status
-  isAlive = !isAlive;
-  const statusText = isAlive ? "🟢 Alive" : "🔴 Dead";
+  // Pick a random status text
+  let randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
   res.status(200).json({ 
-    status: statusText, 
+    status: `🟢 ${randomStatus}`,  // Random status every time API is called
     message: "API is working well.", 
     services: {
       insta_video_download: "/insta - To download Instagram video",
