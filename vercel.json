@@ -2,6 +2,7 @@
   "version": 2,
   "routes": [
     { "src": "/img", "dest": "/api/img.js" },
+    { "src": "/seeai", "dest": "/api/seeai.js" },
     { "src": "/insta", "dest": "/api/insta.js" },
     { "src": "/ss", "dest": "/api/ss.js" },
     { "src": "/api", "dest": "/api/index.js" },
