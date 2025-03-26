@@ -1,3 +1,17 @@
+const fetchWithTimeout = async (url, timeout = 10000) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(id);
+        return response;
+    } catch (error) {
+        clearTimeout(id);
+        throw error;
+    }
+};
+
 export default async function handler(req, res) {
     if (req.method !== "GET") {
         return res.status(405).json({ error: "Only GET requests allowed" });
@@ -11,33 +25,24 @@ export default async function handler(req, res) {
     const apiUrl = `https://seaart-ai.apis-bj-devs.workers.dev/?Prompt=${encodeURIComponent(prompt)}`;
 
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetchWithTimeout(apiUrl, 9000); // Set timeout under 10s
 
         if (!response.ok) {
-            const errorText = await response.text();
-            console.error("SeaArt API Error:", errorText);
-            return res.status(500).json({ error: "Failed to generate AI image", details: errorText });
+            return res.status(500).json({ error: "Failed to generate AI image" });
         }
 
         const jsonData = await response.json();
-
-        // Extracting image URLs from response
         const imageUrls = jsonData.result?.map(item => item.url) || [];
 
-        // ✅ Customizing JSON response
-        const customData = {
+        res.status(200).json({
             status: jsonData.status || "error",
             message: jsonData.message || "No message received",
-            prompt: jsonData.prompt || "No prompt available",
-            images: imageUrls, // Sending only image URLs
+            images: imageUrls,
             join: "@BJ_Devs on Telegram",
             support: "@BJ_Coder"
-        };
-
-        res.status(200).json(customData);
+        });
 
     } catch (error) {
-        console.error("Fetch Error:", error);
-        res.status(500).json({ error: "Failed to generate AI image", details: error.message });
+        res.status(500).json({ error: "Request Timeout or Failed", details: error.message });
     }
 }
